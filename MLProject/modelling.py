@@ -6,7 +6,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-# Load Dataset
 df = pd.read_csv("train_preprocessing.csv")
 
 X = df.drop("Class", axis=1)
@@ -20,11 +19,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
-# MLflow
-mlflow.set_experiment(
-    "Credit Card Fraud Detection"
-)
-
 mlflow.sklearn.autolog()
 
 with mlflow.start_run():
@@ -33,21 +27,13 @@ with mlflow.start_run():
         random_state=42
     )
 
-    model.fit(
-        X_train,
-        y_train
-    )
+    model.fit(X_train, y_train)
 
-    y_pred = model.predict(
-        X_test
-    )
+    pred = model.predict(X_test)
 
-    accuracy = accuracy_score(
+    acc = accuracy_score(
         y_test,
-        y_pred
+        pred
     )
 
-    print(
-        "Accuracy :",
-        accuracy
-    )
+    print("Accuracy :", acc)
